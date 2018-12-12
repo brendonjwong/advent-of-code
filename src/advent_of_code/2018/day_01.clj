@@ -24,8 +24,8 @@
   [data]
   (let [freq-changes (reductions + (cycle data))]
     (loop [frequency (second freq-changes) ; ignore the first frequency since it's not a *change*
-           freqs (drop 2 (reductions + (cycle data)))
+           changes (drop 2 freq-changes)
            seen #{}]
       (if (seen frequency)
         frequency
-        (recur (first freqs) (drop 1 freqs) (conj seen frequency))))))
+        (recur (first changes) (drop 1 changes) (conj seen frequency))))))

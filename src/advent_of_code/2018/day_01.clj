@@ -5,7 +5,7 @@
 
 
 (def data
-  (->> (io/resource "advent-of-code/2018/day-01.txt")
+  (->> (io/resource "2018/day-01.txt")
        slurp
        str/split-lines
        (map read-string)))

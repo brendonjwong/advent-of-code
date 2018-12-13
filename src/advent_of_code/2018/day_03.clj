@@ -45,7 +45,7 @@
 (defn problem-2
   [data]
   (let [id->indices (->> (map parse-claim data)
-                         (mapcat #(hash-map (:id %) (compute-matrix %))))
+                         (mapcat #(hash-map (:id %) (set (compute-locations %)))))
         overlaps (->> (vals id->indices)
                       (apply concat)
                       (frequencies)

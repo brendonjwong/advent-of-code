@@ -40,8 +40,6 @@
   (str (subs s 0 n) (subs s (inc n))))
 
 
-;; IDEA: strip off a character at a time and check frequencies.
-;; use `subs` to strip out characters
 (defn problem-2
   [data]
   (let [max-len (count (first data))

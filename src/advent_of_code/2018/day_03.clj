@@ -24,27 +24,17 @@
        (zipmap [:id :from-left :from-top :width :height])))
 
 
-(defn compute-width
-  [claim]
-  (map (fn [x] [(+ (:from-left claim) x) (:from-top claim)])
-       (range (:width claim))))
-
-
-(defn compute-matrix
-  "Given a claim with an x and y position (`:from-left` and `:from-top`,
-  respectively), as well as `:height` and `:width`, returns a list of
-  indices (represented by vectors)."
-  [claim]
-  (->> (range (:height claim))
-       (map #(update claim :from-top + %))
-       (mapcat compute-width)
-       (into #{})))
+(defn compute-locations
+  [{:keys [from-left from-top width height] :as claim}]
+  (for [x (range from-left (+ from-left width))
+        y (range from-top (+ from-top height))]
+    [x y]))
 
 
 (defn problem-1
   [data]
   (->> (map parse-claim data)
-       (mapcat compute-matrix)
+       (mapcat compute-locations)
        (frequencies)
        (filter #(< 1 (val %)))
        (count)))

@@ -42,5 +42,27 @@
 
 ;;; Part 2
 
+(defn parse-line-2
+  [line]
+  (-> (zipmap
+        [:position-1 :position-2 :letter :password]
+        (rest (re-matches password-pattern line)))
+      ;; `dec` because the positions start at index 1
+      (update :position-1 #(dec (Integer/parseInt %)))
+      (update :position-2 #(dec (Integer/parseInt %)))))
+
+
+(defn valid-password-2?
+  [{:keys [position-1 position-2 letter password]}]
+  (or (and (= letter (str (get password position-1)))
+           (not= letter (str (get password position-2))))
+      (and (not= letter (str (get password position-1)))
+           (= letter (str (get password position-2))))))
+
+
 (defn problem-2
-  [])
+  []
+  (->> (get-data)
+       (map parse-line-2)
+       (filter valid-password-2?)
+       (count)))

@@ -15,17 +15,16 @@
 
 
 (defn problem-1
-  [rows steps]
-  (let [width (count (first rows))
-        height (count rows)]
-    (loop [slope-map (drop (:down steps) rows)
+  [rows {:keys [right down]}]
+  (let [width (count (first rows))]
+    (loop [slope-map (drop down rows)
            x-pos 0
            trees-encountered 0]
       (if (empty? slope-map)
         trees-encountered
-        (let [new-pos (mod (+ x-pos (:right steps)) width)
+        (let [new-pos (mod (+ x-pos right) width)
               encountered-tree? (= \# (get (first slope-map) new-pos))]
-          (recur (drop (:down steps) slope-map)
+          (recur (drop down slope-map)
                  new-pos
                  (if encountered-tree? (inc trees-encountered) trees-encountered)))))))
 

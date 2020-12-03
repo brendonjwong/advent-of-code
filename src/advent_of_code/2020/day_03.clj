@@ -4,7 +4,7 @@
     [clojure.string :as str]))
 
 
-(defn get-data
+(defn input-data
   []
   (->> (io/resource "2020/day-03.txt")
        (slurp)
@@ -12,7 +12,6 @@
 
 
 ;;; Part 1
-
 
 (defn problem-1
   [rows {:keys [right down]}]
@@ -30,16 +29,20 @@
 
 
 (comment
-  (problem-1 (get-data) {:right 3 :down 1}))
+  (problem-1 (input-data) {:right 3 :down 1}))
 
 
 ;;; Part 2
 
 (defn problem-2
   []
-  (let [rows (get-data)]
+  (let [rows (input-data)]
     (* (problem-1 rows {:right 1 :down 1})
        (problem-1 rows {:right 3 :down 1})
        (problem-1 rows {:right 5 :down 1})
        (problem-1 rows {:right 7 :down 1})
        (problem-1 rows {:right 1 :down 2}))))
+
+
+(comment
+  (problem-2))

@@ -1,15 +1,9 @@
 (ns advent-of-code.2020.day-05
   (:require
-    [clojure.java.io :as io]
-    [clojure.set :as set]
-    [clojure.string :as str]))
+    [advent-of-code.util :as u]))
 
 
-(defn input-data
-  []
-  (->> (io/resource "2020/day-05.txt")
-       (slurp)
-       (str/split-lines)))
+(def input-path "2020/day-05.txt")
 
 
 ;;; Part 1
@@ -41,7 +35,7 @@
 
 
 (comment
-  (problem-1 (input-data)))
+  (problem-1 (u/get-input input-path)))
 
 
 ;;; Part 2
@@ -72,4 +66,4 @@
 
 
 (comment
-  (problem-2 (input-data)))
+  (problem-2 (u/get-input input-path)))

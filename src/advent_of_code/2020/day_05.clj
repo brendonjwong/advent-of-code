@@ -36,8 +36,8 @@
 (defn problem-1
   [input]
   (->> (map parse-seat input)
-       #_(map :id)
-       #_(apply max)))
+       (map :id)
+       (apply max)))
 
 
 (comment

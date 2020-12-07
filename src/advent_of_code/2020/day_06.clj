@@ -21,6 +21,10 @@
        (reduce +)))
 
 
+(comment
+  (problem-1 (get-input)))
+
+
 ;;; Part 2
 
 (defn all-yes
@@ -34,3 +38,7 @@
   [input]
   (->> (map all-yes input)
        (reduce +)))
+
+
+(comment
+  (problem-2 (get-input)))

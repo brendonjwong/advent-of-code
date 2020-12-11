@@ -24,15 +24,15 @@
 
 (defn adjacent-occupied
   [seats width height index]
-  (let [xy (->xy width index)
-        x (:x xy)
-        y (:y xy)]
+  (let [out-of-bounds? (fn [x y]
+                         (or (< x 0)
+                             (< y 0)
+                             (<= width x)
+                             (<= height y)))
+        {:keys [x y] :as xy} (->xy width index)]
     (for [x [(dec x) x (inc x)]
           y [(dec y) y (inc y)]]
-      (if (or (< x 0)
-              (< y 0)
-              (<= width x)
-              (<= height y)
+      (if (or (out-of-bounds? x y)
               (and (= x (:x xy)) (= y (:y xy))))
         false
         (= \# (get-seat seats width x y))))))
@@ -42,7 +42,7 @@
   [seats width height]
   (map-indexed
     (fn [idx cell]
-      (let [occupied (adjacent-occupied seats width height idx)]
+      (let [occupied (vec (adjacent-occupied seats width height idx))]
         (cond
           (= \. cell)
           \.
@@ -62,12 +62,15 @@
   (let [width (count (first input))
         height (count input)
         seats (flatten input)]
-    (loop [arrangements (iterate #(assign-seats % width height) seats)]
-      (let [curr (first arrangements)
-            next (second arrangements)]
-        (if (= curr next)
-          (count (filter #(= \# %) curr))
-          (recur (rest arrangements)))))))
+    (->> (iterate #(assign-seats % width height) seats)
+         (partition 2 1)
+         (drop-while (fn [[a1 a2]]
+                       (println (str/join "\n" (map str/join (partition width a1))) "\n")
+                       (not= a1 a2)))
+         (first)
+         (first)
+         (filter #(= \# %))
+         (count))))
 
 
 (comment
@@ -82,10 +85,10 @@
                 "LLLLLLLLLL"
                 "L.LLLLLL.L"
                 "L.LLLLL.LL"])
-  (problem-1 (map vec example)))
+  (problem-1 (map vec example))
 
-  ;; Answer: 2170
-(problem-1 (get-input))
+  ;; Answer: 2247
+  (problem-1 (get-input)))
 
 
 ;;; Part 2
@@ -95,14 +98,5 @@
 
 
 (comment
-  ;; Answer: 8
-  (def short-input [16 10 15 5 1 11 7 19 6 12 4])
-  (problem-2 short-input)
-
-  ;; Answer: 19208
-  (def med-input [28 33 18 42 31 14 46 20 48 47 24 23 49 45 19
-                  38 39 11 1 32 25 35 8 17 7 9 4 2 34 10 3])
-  (problem-2 med-input)
-
-  ;; Answer: 24803586664192
+  ;; Answer: ???
   (problem-2 (get-input)))

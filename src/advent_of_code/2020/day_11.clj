@@ -22,6 +22,14 @@
   (nth seats (+ x (* y width))))
 
 
+(defn adjacents
+  [x y]
+  (for [row [(dec x) x (inc x)]
+        col [(dec y) y (inc y)]
+        :when (not= [x y] [row col])]
+    [row col]))
+
+
 (defn adjacent-occupied
   [seats width height index]
   (let [out-of-bounds? (fn [x y]
@@ -30,10 +38,8 @@
                              (<= width x)
                              (<= height y)))
         {:keys [x y] :as xy} (->xy width index)]
-    (for [x [(dec x) x (inc x)]
-          y [(dec y) y (inc y)]]
-      (if (or (out-of-bounds? x y)
-              (and (= x (:x xy)) (= y (:y xy))))
+    (for [[x y] (adjacents x y)]
+      (if (out-of-bounds? x y)
         false
         (= \# (get-seat seats width x y))))))
 
@@ -41,19 +47,16 @@
 (defn assign-seats
   [seats width height]
   (map-indexed
-    (fn [idx cell]
-      (let [occupied (vec (adjacent-occupied seats width height idx))]
+    (fn [idx seat]
+      (let [occupied (count (filter true? (adjacent-occupied seats width height idx)))]
         (cond
-          (= \. cell)
-          \.
-
-          (and (= \L cell) (every? false? occupied))
+          (and (= \L seat) (zero? occupied))
           \#
 
-          (and (= \#) (<= 4 (count (filter true? occupied))))
+          (and (= \# seat) (<= 4 occupied))
           \L
 
-          :else cell)))
+          :else seat)))
     seats))
 
 

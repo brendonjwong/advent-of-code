@@ -3,7 +3,7 @@
   :url "https://github.com/brendonjwong/advent-of-code"
   :license {:name "Unlicense"
             :url "https://unlicense.org/"}
-  :dependencies [[org.clojure/clojure "1.9.0"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]]
 
   :profiles
   {:repl
